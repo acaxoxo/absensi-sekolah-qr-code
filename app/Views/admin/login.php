@@ -8,20 +8,23 @@
  <?= $this->endSection() ?>
 
  <?= $this->section('content'); ?>
- <div class="main-panel">
-    <div class="content">
-       <div class="container-fluid">
-          <div class="row">
-             <div class="col-md-4 m-auto">
-                <div class="card">
-                   <div class="card-header card-header-primary mb-48">
-                      <h4 class="card-title">Login petugas</h4>
-                      <p class="card-category">Silahkan masukkan username dan password anda</p>
+ <div class="main-panel auth-page">
+    <div class="content w-100">
+       <div class="container-fluid d-flex justify-content-center">
+          <div class="auth-card card">
+             <div class="card-header">
+                <div class="auth-brand text-center w-100">
+                   <img src="<?= base_url('assets/img/new_logo.png'); ?>" alt="Logo">
+                   <div class="text-center">
+                      <h4 class="card-title m-0 text-white">Login Petugas</h4>
+                      <p class="card-category auth-subtitle">Silakan masukkan kredensial Anda</p>
                    </div>
+                </div>
+             </div>
 
-                   <div class="card-body mx-5 my-3">
-                      <?= view('\App\Views\admin\_message_block') ?>
-                      <form action="<?= url_to('login') ?>" method="post">
+             <div class="card-body px-4 pb-4 pt-2">
+                <?= view('\\App\\Views\\admin\\_message_block') ?>
+                <form action="<?= url_to('login') ?>" method="post">
                          <?= csrf_field() ?>
                          <div class="row">
                             <div class="col-md-12">
@@ -44,11 +47,12 @@
                                <?php endif; ?>
                             </div>
                          </div>
-                         <div class="row mt-3">
+                         <div class="row mt-2">
                             <div class="col-md-12">
-                               <div class="form-group">
+                               <div class="form-group password-wrapper">
                                   <label class="bmd-label-floating">Password</label>
-                                  <input type="password" name="password" class="form-control  <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>">
+                                  <input id="passwordField" type="password" name="password" class="form-control  <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>">
+                                  <span class="material-icons password-toggle" onclick="togglePassword()">visibility</span>
                                   <div class="invalid-feedback">
                                      <?= session('errors.password') ?>
                                   </div>
@@ -64,14 +68,19 @@
                                </label>
                             </div>
                          <?php endif; ?>
+                         <div class="mt-3">
+                           <button type="submit" class="btn btn-primary btn-block w-100"><?= lang('Auth.loginAction') ?></button>
+                         </div>
+                                     <?php if ($config->activeResetter) : ?>
+                                        <p class="mt-3 mb-0 text-center"><a href="<?= url_to('forgot') ?>"><?= lang('Auth.forgotYourPassword') ?></a></p>
+                                     <?php endif; ?>
 
-                         <br>
-
-                         <button type="submit" class="btn btn-primary btn-block"><?= lang('Auth.loginAction') ?></button>
-
-                         <?php if ($config->activeResetter) : ?>
-                            <p><a href="<?= url_to('forgot') ?>"><?= lang('Auth.forgotYourPassword') ?></a></p>
-                         <?php endif; ?>
+                                     <div class="auth-actions text-center mt-2">
+                                        <a href="<?= base_url('/') ?>" class="btn btn-link p-0 auth-qr-link">
+                                           <i class="material-icons" style="vertical-align: middle; font-size: 18px; margin-right: 4px;">qr_code</i>
+                                           <span class="align-middle">Scan QR tanpa login</span>
+                                        </a>
+                                     </div>
                          <div class="clearfix"></div>
                       </form>
                    </div>
@@ -81,4 +90,13 @@
        </div>
     </div>
  </div>
+ <script>
+   function togglePassword() {
+     const field = document.getElementById('passwordField');
+     const toggle = document.querySelector('.password-toggle');
+     const isPassword = field.getAttribute('type') === 'password';
+     field.setAttribute('type', isPassword ? 'text' : 'password');
+     toggle.textContent = isPassword ? 'visibility_off' : 'visibility';
+   }
+ </script>
  <?= $this->endSection(); ?>

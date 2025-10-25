@@ -23,7 +23,7 @@ class CreateDB extends Migration
             ('OTKP'),
             ('BDP'),
             ('AKL'),
-            ('RPL');");
+            ('TKJ');");
 
         $this->forge->getConnection()->query("INSERT INTO tb_kelas (kelas, id_jurusan) VALUES
             ('X', 1),

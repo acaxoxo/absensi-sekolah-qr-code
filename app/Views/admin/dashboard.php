@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="card card-stats">
-                    <div class="card-header card-header-primary card-header-icon">
+                    <div class="card-header card-header-rose card-header-icon">
                         <div class="card-icon">
                             <a href="<?= base_url('admin/siswa'); ?>" class="text-white">
                                 <i class="material-icons">person</i>

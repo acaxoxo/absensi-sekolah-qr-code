@@ -2,6 +2,9 @@
 <link href="<?= base_url('assets/fonts/fonts.css?v=1.0.0'); ?>" rel="stylesheet" />
 <link href="<?= base_url('assets/css/material-dashboard.css'); ?>" rel="stylesheet" />
 <link href="<?= base_url('assets/css/style.css?v=1.0.0'); ?>" rel="stylesheet" />
+<link href="<?= base_url('assets/css/custom-theme.css'); ?>" rel="stylesheet" />
+<!-- Page-specific enhancements (scoped with .auth-page etc.) -->
+<link href="<?= base_url('assets/css/login.css'); ?>" rel="stylesheet" />
 <link rel="stylesheet" href="<?= base_url('assets/js/plugins/file-uploader/css/jquery.dm-uploader.min.css'); ?>" />
 <link rel="stylesheet" href="<?= base_url('assets/js/plugins/file-uploader/css/styles-1.0.css'); ?>" />
 

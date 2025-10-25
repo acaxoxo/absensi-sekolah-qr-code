@@ -141,14 +141,41 @@ class JurusanController extends BaseController
         $id = inputPost('id');
         $jurusan = $this->jurusanModel->getJurusan($id);
         if (!empty($jurusan)) {
-            if (!empty($this->kelasModel->getKelasCountByJurusan($id))) {
-                $this->session->setFlashdata('error', 'Hapus Relasi Data Dulu');
-                exit();
-            }
-            if ($this->jurusanModel->deleteJurusan($id)) {
-                $this->session->setFlashdata('success', 'Data berhasil dihapus');
-            } else {
-                $this->session->setFlashdata('error', 'Gagal menghapus data');
+            // Start transaction
+            $this->jurusanModel->transStart();
+            
+            try {
+                // Delete all related data in correct order
+                $db = \Config\Database::connect();
+                
+                // 1. Delete attendance records for students in classes of this jurusan
+                $db->query("DELETE ps FROM tb_presensi_siswa ps
+                    INNER JOIN tb_siswa s ON ps.id_siswa = s.id_siswa
+                    INNER JOIN tb_kelas k ON s.id_kelas = k.id_kelas
+                    WHERE k.id_jurusan = ?", [$id]);
+                
+                // 2. Delete students in classes of this jurusan
+                $db->query("DELETE s FROM tb_siswa s
+                    INNER JOIN tb_kelas k ON s.id_kelas = k.id_kelas
+                    WHERE k.id_jurusan = ?", [$id]);
+                
+                // 3. Delete all classes of this jurusan
+                $db->query("DELETE FROM tb_kelas WHERE id_jurusan = ?", [$id]);
+                
+                // 4. Finally delete the jurusan itself
+                $this->jurusanModel->deleteJurusan($id);
+                
+                // Complete transaction
+                $this->jurusanModel->transComplete();
+                
+                if ($this->jurusanModel->transStatus() === false) {
+                    $this->session->setFlashdata('error', 'Gagal menghapus data');
+                } else {
+                    $this->session->setFlashdata('success', 'Data berhasil dihapus');
+                }
+            } catch (\Exception $e) {
+                $this->jurusanModel->transRollback();
+                $this->session->setFlashdata('error', 'Gagal menghapus data: ' . $e->getMessage());
             }
         }
     }

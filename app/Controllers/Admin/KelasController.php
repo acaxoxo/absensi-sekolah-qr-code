@@ -149,15 +149,35 @@ class KelasController extends BaseController
         $id = inputPost('id');
         $kelas = $this->kelasModel->getKelas($id);
         if (!empty($kelas)) {
-            $siswaModel = new \App\Models\SiswaModel();
-            if (!empty($siswaModel->getSiswaCountByKelas($id))) {
-                $this->session->setFlashdata('error', 'Kelas Masih Memiliki Siswa Aktif');
-                exit();
-            }
-            if ($this->kelasModel->deleteKelas($id)) {
-                $this->session->setFlashdata('success', 'Data berhasil dihapus');
-            } else {
-                $this->session->setFlashdata('error', 'Gagal menghapus data');
+            // Start transaction
+            $this->kelasModel->transStart();
+            
+            try {
+                // Delete all related data in correct order
+                $db = \Config\Database::connect();
+                
+                // 1. Delete attendance records for students in this class
+                $db->query("DELETE ps FROM tb_presensi_siswa ps
+                    INNER JOIN tb_siswa s ON ps.id_siswa = s.id_siswa
+                    WHERE s.id_kelas = ?", [$id]);
+                
+                // 2. Delete students in this class
+                $db->query("DELETE FROM tb_siswa WHERE id_kelas = ?", [$id]);
+                
+                // 3. Finally delete the class itself
+                $this->kelasModel->deleteKelas($id);
+                
+                // Complete transaction
+                $this->kelasModel->transComplete();
+                
+                if ($this->kelasModel->transStatus() === false) {
+                    $this->session->setFlashdata('error', 'Gagal menghapus data');
+                } else {
+                    $this->session->setFlashdata('success', 'Data berhasil dihapus');
+                }
+            } catch (\Exception $e) {
+                $this->kelasModel->transRollback();
+                $this->session->setFlashdata('error', 'Gagal menghapus data: ' . $e->getMessage());
             }
         }
     }

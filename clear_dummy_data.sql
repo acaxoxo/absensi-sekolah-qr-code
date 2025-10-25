@@ -1,0 +1,8 @@
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE tb_presensi_siswa;
+TRUNCATE TABLE tb_presensi_guru;
+TRUNCATE TABLE tb_siswa;
+TRUNCATE TABLE tb_guru;
+TRUNCATE TABLE tb_kelas;
+TRUNCATE TABLE tb_jurusan;
+SET FOREIGN_KEY_CHECKS=1;

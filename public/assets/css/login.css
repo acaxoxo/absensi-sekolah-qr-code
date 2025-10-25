@@ -1,0 +1,100 @@
+/* Scoped styles for the login page */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(25, 118, 210, 0.08), transparent),
+              radial-gradient(1000px 500px at 110% 10%, rgba(25, 118, 210, 0.05), transparent);
+}
+
+[data-theme="dark"] .auth-page {
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(25, 118, 210, 0.18), transparent),
+              radial-gradient(1000px 500px at 110% 10%, rgba(25, 118, 210, 0.12), transparent);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+}
+
+.auth-card .card-header {
+  background: var(--primary-color) !important;
+  border-radius: 14px 14px 0 0 !important;
+  padding: 20px !important;
+}
+
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: -52px;
+  margin-bottom: 8px;
+}
+
+.auth-brand img {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  background: #fff;
+  object-fit: contain;
+}
+
+.auth-subtitle {
+  color: rgba(255,255,255,0.85);
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Inputs */
+.auth-card .form-group label {
+  color: var(--text-secondary) !important;
+}
+
+.auth-card .form-control {
+  height: 44px;
+  border-radius: 10px !important;
+}
+
+/* Password visibility toggle */
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.password-toggle:hover { color: var(--text-primary); }
+
+/* Buttons */
+.auth-card .btn-primary {
+  height: 44px;
+  border-radius: 10px !important;
+}
+
+/* Footer actions under the form */
+.auth-actions .auth-qr-link {
+  color: var(--primary-color) !important;
+  text-decoration: none;
+}
+
+.auth-actions .auth-qr-link:hover {
+  text-decoration: underline;
+}
+
+/* Minor tweak for the background image from starting_page_layout */
+.bg.bg-image { opacity: 0.06; }
+
+[data-theme="dark"] .bg.bg-image { opacity: 0.08; }
