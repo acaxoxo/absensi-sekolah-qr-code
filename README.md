@@ -96,11 +96,41 @@ Aplikasi Web Sistem Absensi Sekolah Berbasis QR Code adalah sebuah proyek yang b
 
 ## Cara Penggunaan
 
-### Persyaratan
+### Persyaratan (Apa saja yang harus di-install)
 
-- [Composer](https://getcomposer.org/).
-- PHP 8.1+ dan MySQL/MariaDB atau [XAMPP](https://www.apachefriends.org/download.html) versi 8.1+ dengan mengaktifkan extension `intl` dan `gd`.
-- Pastikan perangkat memiliki kamera/webcam untuk menjalankan qr scanner. Bisa juga menggunakan kamera HP dengan bantuan software DroidCam.
+- Git (untuk clone/pull repo)
+- [Composer](https://getcomposer.org/) (dependency manager PHP)
+- PHP 8.1+ (disarankan 8.2) dan MySQL/MariaDB
+  - Windows: direkomendasikan [XAMPP 8.1+](https://www.apachefriends.org/download.html) yang sudah menyertakan Apache + PHP + MySQL/MariaDB
+- Ekstensi PHP yang perlu aktif:
+  - `intl`, `gd`, `zip`
+  - (Biasanya sudah aktif: `mbstring`, `openssl`, `json`)
+- Perangkat kamera/webcam untuk scan QR (opsional bisa pakai HP via DroidCam)
+
+Tips mengaktifkan ekstensi di XAMPP (Windows):
+1. Buka file `C:\xampp\php\php.ini`
+2. Pastikan baris berikut tidak diawali `;` (artinya aktif):
+    - `extension=intl`
+    - `extension=gd`
+    - `extension=zip`
+3. Simpan lalu Restart Apache dari XAMPP Control Panel
+
+### Quick Start (Local) — Setelah Pull/Clone
+
+1. Clone/Pull repository ini
+2. Jalankan `composer install`
+3. Salin `.env.example` menjadi `.env`
+4. Edit `.env` minimal bagian berikut:
+    - `app.baseURL = http://localhost:8080/`
+    - `database.default.hostname`, `database.default.database`, `database.default.username`, `database.default.password`
+5. Buat database (misal: `db_absensi`) di MySQL/MariaDB
+6. Jalankan migrasi: `php spark migrate --all`
+7. Jalankan server dev: `php spark serve`
+8. Buka `http://localhost:8080`
+9. Login awal (superadmin):
+    - username: `superadmin`
+    - password: `superadmin`
+10. Izinkan akses kamera di browser saat scan QR
 
 ### Instalasi
 
